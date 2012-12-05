@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:acegijsf="http://sourceforge.net/projects/jsf-comp/acegijsf"
+	xmlns:c="http://sourceforge.net/projects/jsf-comp">
+
+<body>
+
+<ui:composition template="/layout/menu.xhtml">
+
+	<ui:debug hotkey="p" rendered="true" />
+
+	<ui:define name="title">
+		Editar acción
+	</ui:define>
+
+	<ui:define name="main_content">
+		<h:form>
+			<rich:panel>
+				<f:facet name="header">Editar acción</f:facet>
+
+
+				<h:panelGrid columns="2">
+					<h:outputText value="Descripción de la acción:" for="action_description" />
+					<h:inputText id="action_description" maxlength="100" value="#{actionManagerBean.selectedData.description}" 
+						required="true" size="70">
+						<f:attribute name="fieldName" value="Descripción del servicio" />
+					</h:inputText>
+
+					<h:outputText value="Nombre del servicio:" for="service_name" />
+					<h:inputText id="service_name" maxlength="50" value="#{actionManagerBean.selectedData.serviceName}" 
+						required="true" size="70">
+						<f:attribute name="fieldName" value="Nombre del servicio" />
+					</h:inputText>
+
+					<h:outputText value="Dirección:" for="address" />
+					<h:inputText id="address" maxlength="200" value="#{actionManagerBean.selectedData.wsdlUrl}"
+						required="true" size="70" validator="#{urlValidator.validate}">
+						<f:attribute name="fieldName" value="Dirección:" />
+					</h:inputText>
+
+					<h:outputText value="Nombre del método:" for="method_name" />
+					<h:inputText id="method_name" maxlength="100" value="#{actionManagerBean.selectedData.methodNane}" 
+						required="true" size="70">
+						<f:attribute name="fieldName" value="Nombre del método" />
+					</h:inputText>
+
+				</h:panelGrid>
+
+				<h:panelGrid columns="2">
+					<h:commandButton value="Guardar" action="#{actionManagerBean.save}" styleClass="command-button"/>
+					<h:commandButton immediate="true" value="Volver" action="success" styleClass="command-button" />
+				</h:panelGrid>
+
+				<h:messages id="messages" styleClass="errors" style="clear: both;" />
+				<br style="clear: both;" />
+			</rich:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>

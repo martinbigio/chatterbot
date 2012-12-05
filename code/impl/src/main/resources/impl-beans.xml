@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context 
+                           http://www.springframework.org/schema/context/spring-context.xsd
+                           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+                           http://www.springframework.org/schema/tx
+						   http://www.springframework.org/schema/tx/spring-tx.xsd">
+	<context:property-placeholder location="classpath:setup.properties" />
+
+	<!-- AOP bean -->
+	<bean id="loggingAspectBean" class="ar.edu.itba.tpf.chatterbot.support.LoggingAspect">
+		<property name="errorLogDAO" ref="errorLogDAO" />
+	</bean>
+	<!-- End AOP bean -->
+
+	<!-- DAO beans -->
+	<bean id="userDAO" class="ar.edu.itba.tpf.chatterbot.dao.UserDAOImpl" />
+	<bean id="roleDAO" class="ar.edu.itba.tpf.chatterbot.dao.RoleDAOImpl" />
+	<bean id="serverDAO" class="ar.edu.itba.tpf.chatterbot.dao.ServerDAOImpl" />
+	<bean id="treeNodeDAO" class="ar.edu.itba.tpf.chatterbot.dao.TreeNodeDAOImpl" />
+	<bean id="globalNodeDAO" class="ar.edu.itba.tpf.chatterbot.dao.GlobalNodeDAOImpl" />
+	<bean id="webServiceActionDAO" class="ar.edu.itba.tpf.chatterbot.dao.WebServiceActionDAOImpl" />
+	<bean id="baseActionDAO" class="ar.edu.itba.tpf.chatterbot.dao.BaseActionDAOImpl" />
+	<bean id="chatDAO" class="ar.edu.itba.tpf.chatterbot.dao.ChatDAOImpl" />
+	<bean id="errorLogDAO" class="ar.edu.itba.tpf.chatterbot.dao.ErrorLogDAOImpl" />
+	<!-- End DAO beans -->
+
+	<!-- Service beans -->
+	<bean id="userService" class="ar.edu.itba.tpf.chatterbot.service.UserServiceImpl">
+		<property name="userDAO" ref="userDAO" />
+		<property name="roleDAO" ref="roleDAO" />
+	</bean>
+	<bean id="serverService" class="ar.edu.itba.tpf.chatterbot.service.ServerServiceImpl">
+		<property name="serverDAO" ref="serverDAO" />
+		<property name="dispatcherURL" value="${chatterbot.dispatcherURL}" />
+	</bean>
+	<bean id="chatterbotService"
+		class="ar.edu.itba.tpf.chatterbot.service.ChatterbotServiceImpl">
+		<property name="treeNodeDAO" ref="treeNodeDAO" />
+		<property name="globalNodeDAO" ref="globalNodeDAO" />
+		<property name="baseActionDAO" ref="baseActionDAO" />
+		<property name="webServiceActionDAO" ref="webServiceActionDAO" />
+		<property name="sentenceFile" value="${opennlp.sentence}" />
+		<property name="chunkerFile" value="${opennlp.chunker}" />
+		<property name="tokenizerFile" value="${opennlp.tokenizer}" />
+		<property name="taggerFile" value="${opennlp.tagger}" />
+	</bean>
+	<bean id="loggingService" class="ar.edu.itba.tpf.chatterbot.service.LoggingServiceImpl">
+		<property name="chatDAO" ref="chatDAO" />
+		<property name="errorLogDAO" ref="errorLogDAO" />
+	</bean>
+	<!-- End Service beans -->
+</beans>

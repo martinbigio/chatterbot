@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<artifactId>chatterbot-app</artifactId>
+		<groupId>ar.edu.itba.tpf</groupId>
+		<version>1.1</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>ar.edu.itba.tpf</groupId>
+	<artifactId>chatterbot-business</artifactId>
+	<packaging>war</packaging>
+	<name>Chatterbot - Aplicacion de la empresa</name>
+	<version>${mainVersion}</version>
+	<build>
+		<finalName>chatterbot-business</finalName>
+	</build>
+	<dependencies>
+		<dependency>
+			<groupId>ar.edu.itba.tpf</groupId>
+			<artifactId>chatterbot-api</artifactId>
+			<version>${mainVersion}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.ws</groupId>
+			<artifactId>jaxws-rt</artifactId>
+			<version>2.1.3</version>
+			<scope>compile</scope>
+		</dependency>
+	</dependencies>
+</project>

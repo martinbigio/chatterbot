@@ -1,0 +1,1 @@
+<jsp:forward page="faces/pages/home.xhtml" />

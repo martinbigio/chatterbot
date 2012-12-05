@@ -1,0 +1,190 @@
+<web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
+				        http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+
+	
+	<!-- Spring Configuration -->
+	
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+					classpath:/impl-data.xml
+					classpath:/impl-beans.xml
+					/WEB-INF/springContext*.xml
+		</param-value>
+	</context-param>
+	
+	<listener>
+    	<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	
+	<listener>
+  	  <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+	</listener>
+	
+	<!-- Spring Security Filter (Don't move, it has to be the first filter) -->
+	
+	<filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+    
+    <filter-mapping>
+      	<filter-name>springSecurityFilterChain</filter-name>
+      	<url-pattern>/*</url-pattern>
+		<dispatcher>FORWARD</dispatcher>
+      	<dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
+	
+	<!-- Faces Configuration -->
+
+	<context-param>
+        <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+        <param-value>server</param-value>
+	</context-param>
+	
+	<context-param>
+        <param-name>javax.faces.CONFIG_FILES</param-name>
+        <param-value>/WEB-INF/faces-config.xml</param-value>
+	</context-param>
+	
+	<!-- Facelets pages will use the .xhtml extension -->
+	
+	<context-param>
+    	<param-name>facelets.VIEW_MAPPINGS</param-name>
+    	<param-value>*.xhtml</param-value>
+	</context-param>     
+	
+	<context-param>
+    	<param-name>javax.faces.DEFAULT_SUFFIX</param-name>
+    	<param-value>.jsp</param-value>
+	</context-param>
+	
+
+	<!-- Optional JSF-RI Parameters to Help Debug -->
+
+<!-- 
+	<context-param>
+         <param-name>com.sun.faces.validateXml</param-name>
+         <param-value>true</param-value>
+	</context-param>
+
+	<context-param>
+         <param-name>com.sun.faces.verifyObjects</param-name>
+         <param-value>true</param-value>
+	</context-param>  -->
+
+	<servlet>
+    	<servlet-name>faces</servlet-name>
+    	<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+         <load-on-startup>1</load-on-startup>
+	</servlet>	
+	
+	<servlet-mapping>
+    	<servlet-name>faces</servlet-name>
+	    <url-pattern>/faces/*</url-pattern>
+	</servlet-mapping>
+
+	<listener>
+        <listener-class>com.sun.faces.config.ConfigureListener</listener-class>
+    </listener>
+
+	<!-- Facelets Configuration -->
+
+	<!-- Special Debug Output for Development -->
+
+	<context-param>
+         <param-name>facelets.DEVELOPMENT</param-name>
+         <param-value>true</param-value>
+	</context-param>
+
+	<!-- RichFaces Configuration -->
+
+	<context-param>
+		<param-name>org.richfaces.SKIN</param-name>
+		<param-value>chatterbot</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>org.richfaces.CONTROL_SKINNING</param-name>
+		<param-value>enable</param-value>
+	</context-param>
+		
+	<context-param>
+		<param-name>org.ajax4jsf.RESOURCE_URI_PREFIX</param-name>
+		<param-value>../</param-value>
+	</context-param>
+
+	<filter>
+		<display-name>RichFaces Filter</display-name>
+		<filter-name>richfaces</filter-name>
+		<filter-class>org.ajax4jsf.Filter</filter-class>
+	</filter>
+	
+	<filter-mapping>
+		<filter-name>richfaces</filter-name>
+		<servlet-name>faces</servlet-name>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>INCLUDE</dispatcher>
+	</filter-mapping>  
+
+	<context-param>
+		<param-name>org.ajax4jsf.VIEW_HANDLERS</param-name>
+		<param-value>com.sun.facelets.FaceletViewHandler</param-value>
+	</context-param>
+	
+	<!-- Tomahawk Configuration -->
+	
+	<context-param>
+        <param-name>facelets.LIBRARIES</param-name>
+        <param-value>/WEB-INF/tomahawk.taglib.xml;/WEB-INF/acegijsf.taglib.xml;/WEB-INF/chartcreator.taglib.xml;/WEB-INF/chatterbot.taglib.xml</param-value>
+    </context-param>
+    
+    <filter>
+		<filter-name>MyFacesExtensionsFilter</filter-name>
+		<filter-class>org.apache.myfaces.webapp.filter.ExtensionsFilter</filter-class>
+    	<init-param>
+        	<param-name>uploadMaxFileSize</param-name>
+        	<param-value>20m</param-value>
+	    </init-param>
+	</filter>
+    
+    <!-- extension mapping for adding <script/>, <link/>, and other resource tags to JSF-pages  -->
+    <filter-mapping>
+	    <filter-name>MyFacesExtensionsFilter</filter-name>
+ 	   <servlet-name>faces</servlet-name>
+	</filter-mapping>
+	
+	<!-- extension mapping for serving page-independent resources (javascript, stylesheets, images, etc.)  -->
+	<filter-mapping>
+    	<filter-name>MyFacesExtensionsFilter</filter-name>
+    	<url-pattern>/faces/myFacesExtensionResource/*</url-pattern>
+	</filter-mapping>
+	
+	<!-- Chartcreator Configuration -->
+	
+	<context-param>
+		<param-name>net.sf.jsfcomp.chartcreator.USE_CHARTLET</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	
+	<servlet>
+		<servlet-name>Chartlet</servlet-name>
+		<servlet-class>net.sf.jsfcomp.chartcreator.Chartlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>Chartlet</servlet-name>
+		<url-pattern>*.chart</url-pattern>
+	</servlet-mapping>
+	
+	
+	<!-- General web app Configuration -->
+	
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+	
+</web-app>

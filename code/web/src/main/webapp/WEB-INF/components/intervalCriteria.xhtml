@@ -1,0 +1,26 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:z="http://www.qualcomm.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:rich="http://richfaces.org/rich">
+
+	<ui:composition>
+		<h:panelGrid columns="9">
+			<h:outputText value="Desde: " />
+			<rich:calendar inputSize="10" value="#{intervalCriteriaManager.fromDate}" />
+			<rich:inputNumberSpinner enableManualInput="false" cycled="true" minValue="00" maxValue="23" 
+				value="#{intervalCriteriaManager.fromHour}" inputSize="2" />
+			<h:outputText value="hs. a " />
+			<rich:calendar inputSize="10" value="#{intervalCriteriaManager.toDate}" />
+			<rich:inputNumberSpinner enableManualInput="false" cycled="true" minValue="00" maxValue="23" 
+				value="#{intervalCriteriaManager.toHour}" inputSize="2" />
+			<h:outputText value="hs." />
+			<h:commandButton value="Actualizar" action="#{updateAction.updateDate}" />
+		</h:panelGrid>
+	</ui:composition>
+</html>

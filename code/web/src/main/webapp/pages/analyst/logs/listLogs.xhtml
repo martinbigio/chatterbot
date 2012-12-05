@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:acegijsf="http://sourceforge.net/projects/jsf-comp/acegijsf"
+	xmlns:c="http://sourceforge.net/projects/jsf-comp"
+	xmlns:chatterbot="http://www.chatterbot.com/jsf">
+
+<body>
+
+<ui:composition template="/layout/menu.xhtml">
+
+	<ui:debug hotkey="p" rendered="true" />
+
+	<ui:define name="title">Logs de mensajes</ui:define>
+
+	<ui:define name="main_content">
+		<h:form>
+			<rich:panel>
+				<f:facet name="header">Logs de mensajes</f:facet>
+				
+				<rich:panel header="Filtro de búsqueda" styleClass="filter-container" >
+					<h:panelGroup>
+						<h:messages id="messages" styleClass="errors" style="clear: both;" />
+					</h:panelGroup>
+					<div>
+						<span>Palabras clave: </span>
+						<h:inputText size="60" value="#{chatLogManagerBean.keywords}"/>
+					</div>	
+					<chatterbot:intervalCriteria 
+						intervalCriteriaManager="#{chatLogManagerBean.intervalCriteriaManager}"
+						updateAction="#{chatLogManagerBean}"/>
+				</rich:panel>	
+				
+				<p style="width: 50%;">				
+					<h:outputText value="No existen conversaciones con el criterio establecido." 
+						rendered="#{chatLogManagerBean.chats.rowCount == 0}"/>
+				</p>
+				
+				<rich:dataTable var="chat"
+					value="#{chatLogManagerBean.chats}" styleClass="data-table" 
+						rendered="#{chatLogManagerBean.chats.rowCount > 0}" >
+					<f:facet name="header">
+						<rich:columnGroup>
+							<rich:column>
+								<h:outputText value="Cliente" />
+							</rich:column>
+							<rich:column>
+								<h:outputText value="Servidor" />
+							</rich:column>
+							<rich:column>
+								<h:outputText value="Nodo final" />
+							</rich:column>
+							<rich:column>
+								<h:outputText value="Duración (minutos)" />
+							</rich:column>
+							<rich:column>
+								<h:outputText value="Fecha de comienzo" />
+							</rich:column>
+							<rich:column>
+								<h:outputText value="Fecha de finalización" />
+							</rich:column>
+							<rich:column>
+								<h:outputText value="Exitoso" />
+							</rich:column>
+							<rich:column>
+								<h:outputText value=" " />
+							</rich:column>
+						</rich:columnGroup>
+					</f:facet>
+					<rich:column>
+						<h:outputText value="#{chat.client}" />
+					</rich:column>
+					<rich:column>
+						<h:outputText value="#{chat.server.name}" />
+					</rich:column>
+					<rich:column>
+						<h:outputText value="#{chat.finalNode}" rendered="#{chat.successful}" />
+						<h:outputText value="-" rendered="#{!chat.successful}" />
+					</rich:column>
+					<rich:column>
+						<h:outputText value="#{chat.length}" />
+					</rich:column>
+					<rich:column>
+						<h:outputText value="#{chat.startDate}" >
+							<f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="America/Buenos_Aires" />
+						</h:outputText>
+					</rich:column>
+					<rich:column>
+						<h:outputText value="#{chat.endDate}" >
+							<f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="America/Buenos_Aires" />
+						</h:outputText>
+					</rich:column>
+					<rich:column>
+						<h:outputText value="#{chat.successful ? 'Sí' : 'No'}" />
+					</rich:column>
+					<rich:column>
+						<h:commandLink action="#{chatLogManagerBean.viewChat}">
+							<h:graphicImage title="Ver" value="/images/view.png" style="border: none;" />
+						</h:commandLink>
+					</rich:column>
+				</rich:dataTable>
+
+				<br style="clear: both;" />
+			</rich:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>

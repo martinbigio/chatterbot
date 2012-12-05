@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:acegijsf="http://sourceforge.net/projects/jsf-comp/acegijsf">
+
+<head>
+<title><ui:insert name="title">Blank page</ui:insert> - Chatterbot</title>
+<ui:insert name="meta" />
+<ui:insert name="javascript">
+	<script>
+		function onLoadFunction() {}
+	</script>
+</ui:insert>
+<link rel="stylesheet" type="text/css"
+	href="#{facesContext.externalContext.requestContextPath}/css/layout.css" />
+</head>
+
+<body onload="javascript:onLoadFunction()">
+
+
+<!-- <rich:effect for="window" event="onload" type="Appear" params="targetId:'frame',duration:2,from:0.0,to:1.0" />  -->
+
+<div id="frame">
+	<h1 class="header-title">Chatterbot</h1>
+	
+	<!-- Top toolbar --> 
+	<h:form id="toolbar_form">
+		<rich:toolBar id="bar_top" height="30"
+			itemSeparator="#{tbBean.groupSeparator}">
+
+			<rich:toolBarGroup>
+			</rich:toolBarGroup>
+
+			<rich:toolBarGroup location="right"
+				itemSeparator="#{tbBean.groupItemSeparator}">
+				<acegijsf:authorize ifAnyGranted="ROLE_ADMIN,ROLE_USER">
+					<h:outputText value="Usuario: " />
+					<acegijsf:authentication operation="username" /> <span>| &nbsp;</span>
+    	    		    		<h:commandLink value="Home" action="goToHome" /> <span>| &nbsp;</span>
+        			    		<h:commandLink value="Logout" action="logout" />
+				</acegijsf:authorize>
+			</rich:toolBarGroup>
+		</rich:toolBar>
+	</h:form>
+
+<ui:insert name="content" />
+
+<div class="dr-toolbar-ext footer-credits"><f:verbatim>© 2008 - ITBA</f:verbatim></div>
+
+</div>
+<!-- div frame close -->
+</body>
+</html>

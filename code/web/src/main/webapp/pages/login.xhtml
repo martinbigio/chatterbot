@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+
+<body>
+
+<ui:composition template="/layout/layout.xhtml">
+
+	<ui:define name="title">Panel de Administración</ui:define>
+	
+	<ui:define name="javascript" >
+		<script>
+			function onLoadFunction() {
+				var element = document.getElementById("j_username");
+	    		if (element) {
+        			element.focus();
+			    }
+			}
+		</script>
+	</ui:define>
+	
+	<ui:define name="content">
+
+		<rich:panel>
+			<f:facet name="header">Login al Panel de Administración</f:facet>
+
+			<h:graphicImage value="/images/login.png" style="float: left; margin: 0 16px;" />
+
+			<h:form id="login-form">
+			
+				<label for="j_username">
+					<h:outputText for="j_username" value="Usuario:" />
+				</label>
+				<t:inputText id="j_username" forceId="true"
+					value="#{loggingManagerBean.j_username}" size="30" maxlength="20"
+					required="true" label="nombre de usuario" >
+					<f:attribute name="fieldName" value="Usuario" />
+				</t:inputText>
+				<br style="clear: left;" />
+				
+				<label for="j_password">
+					<h:outputText for="j_password" value="Contraseña:" />
+				</label>
+				<t:inputSecret id="j_password" forceId="true" size="30"
+					maxlength="20" value="#{loggingManagerBean.j_password}" redisplay="true"
+					required="true" label="contraseña" >
+					<f:attribute name="fieldName" value="Contraseña" />
+				</t:inputSecret>
+
+				<h:commandButton action="login" value="Aceptar" styleClass="login-button" />
+			</h:form>
+
+			<div style="clear: left;">
+				<h:messages styleClass="errors"/>
+			</div>
+			
+		</rich:panel>
+	</ui:define>
+</ui:composition>
+</body>
+</html>

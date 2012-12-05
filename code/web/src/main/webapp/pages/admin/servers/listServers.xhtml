@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:acegijsf="http://sourceforge.net/projects/jsf-comp/acegijsf"
+	xmlns:c="http://sourceforge.net/projects/jsf-comp">
+
+<body>
+
+<ui:composition template="/layout/menu.xhtml">
+
+	<ui:debug hotkey="p" rendered="true" />
+
+	<ui:define name="title"> Listado de Servidores</ui:define>
+
+	<ui:define name="main_content">
+		<h:form>
+			<rich:panel>
+				<f:facet name="header">Listado de Servidores</f:facet>
+
+				<h:outputLabel value="#{serverManagerBean.loadListData}" />
+
+				<h:outputText value="No hay servidores cargados."
+					rendered="#{serverManagerBean.listData.rowCount == 0}" />
+
+				<rich:dataTable var="server" value="#{serverManagerBean.listData}"
+					rendered="#{serverManagerBean.listData.rowCount > 0}">
+					<f:facet name="header">
+						<rich:columnGroup>
+							<rich:column>
+								<h:outputText value="Nombre" />
+							</rich:column>
+							<rich:column>
+								<h:outputText value="Hostname" />
+							</rich:column>
+							<rich:column>
+								<h:outputText value="Puerto" />
+							</rich:column>
+							<rich:column>
+								<h:outputText value="Cantidad máxima de chatterbots" />
+							</rich:column>
+							<rich:column>
+								<h:outputText value="Carga máxima (0: baja, 1: alta)" />
+							</rich:column>
+							<rich:column>
+								<h:outputText value="Habilitar / Deshabilitar" />
+							</rich:column>
+							<rich:column>
+								<h:outputText value="Eliminar" />
+							</rich:column>
+						</rich:columnGroup>
+					</f:facet>
+					<rich:column>
+						<h:outputText value="#{server.name}" />
+					</rich:column>
+					<rich:column>
+						<h:outputText value="#{server.hostname}" />
+					</rich:column>
+					<rich:column>
+						<h:outputText value="#{server.port}" />
+					</rich:column>
+					<rich:column>
+						<h:outputText value="#{server.maxChatterbots}" />
+					</rich:column>
+					<rich:column>
+						<h:outputText value="#{server.maxLoad}" />
+					</rich:column>
+					<rich:column>
+						<h:commandLink action="#{serverManagerBean.changeStatusServer}">
+							<h:graphicImage title="Habilitar" value="/images/play.png"
+								style="border:none" rendered="#{!server.enabled}" />
+							<h:graphicImage title="Deshabilitar" value="/images/stop.png"
+								style="border:none" rendered="#{server.enabled}" />
+						</h:commandLink>
+					</rich:column>
+					<rich:column>
+						<h:commandLink action="#{serverManagerBean.remove}">
+							<h:graphicImage title="Eliminar" value="/images/delete.png"
+								style="border:none" />
+						</h:commandLink>
+					</rich:column>
+				</rich:dataTable>
+
+				<h:messages id="messages" styleClass="errors" style="clear: both;" />
+				<br style="clear: both;" />
+			</rich:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>

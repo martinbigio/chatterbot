@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<artifactId>chatterbot-app</artifactId>
+		<groupId>ar.edu.itba.tpf</groupId>
+		<version>1.1</version>
+	</parent>
+
+	<!-- Project general information -->
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>chatterbot-web</artifactId>
+	<packaging>war</packaging>
+	<name>Chatterbot - Web</name>
+	<description>Aplicacion web para administracion de chatterbots.</description>
+	<version>${mainVersion}</version>
+
+	<repositories>
+		<!-- el-er Repository -->
+		<repository>
+			<id>maven-repository.dev.java.net</id>
+			<name>Java Dev Net Repository</name>
+			<url>http://download.java.net/maven/2/</url>
+			<releases>
+				<enabled>true</enabled>
+				<updatePolicy>never</updatePolicy>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
+	<build>
+		<finalName>chatterbot-web</finalName>
+		<plugins>
+
+			<!-- Maven-Jetty plugin -->
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>maven-jetty-plugin</artifactId>
+				<version>6.1.11</version>
+				<configuration>
+					<scanIntervalSeconds>10</scanIntervalSeconds>
+					<connectors>
+						<connector
+							implementation="org.mortbay.jetty.nio.SelectChannelConnector">
+							<port>8282</port>
+							<maxIdleTime>60000</maxIdleTime>
+						</connector>
+					</connectors>
+				</configuration>
+			</plugin>
+
+			<!-- Maven sql plugin -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>sql-maven-plugin</artifactId>
+				<version>1.1</version>
+
+				<dependencies>
+					<!-- specify the dependent jdbc driver here -->
+					<dependency>
+						<groupId>ojdbc</groupId>
+						<artifactId>ojdbc</artifactId>
+						<version>14</version>
+					</dependency>
+				</dependencies>
+
+				<!-- common configuration shared by all executions -->
+				<configuration>
+					<driver>oracle.jdbc.driver.OracleDriver</driver>
+					<url>jdbc:oracle:thin:@localhost:1521:ITBA</url>
+					<username>agregoir</username>
+					<password>numero02</password>
+					<srcFiles>
+						<srcFile>../schema.sql</srcFile>
+					</srcFiles>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.1</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>java</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<mainClass>
+						ar.edu.itba.tpf.chatterbot.db.StartUpDatabase
+					</mainClass>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>ar.edu.itba.tpf</groupId>
+			<artifactId>chatterbot-api</artifactId>
+			<version>${mainVersion}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>ar.edu.itba.tpf</groupId>
+			<artifactId>chatterbot-impl</artifactId>
+			<version>${mainVersion}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.sf</groupId>
+			<artifactId>chartcreator</artifactId>
+			<version>1.2.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>jfree</groupId>
+			<artifactId>jfreechart</artifactId>
+			<version>1.0.5</version>
+		</dependency>
+
+
+		<!-- RichFaces Tags -->
+
+		<dependency>
+			<groupId>org.richfaces.ui</groupId>
+			<artifactId>richfaces-ui</artifactId>
+			<version>3.1.0</version>
+		</dependency>
+
+		<!-- Tomahack Tags -->
+
+		<dependency>
+			<groupId>org.apache.myfaces.tomahawk</groupId>
+			<artifactId>tomahawk</artifactId>
+			<version>1.1.6</version>
+		</dependency>
+
+		<!-- Java Servlet -->
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.4</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- JSF -->
+
+		<dependency>
+			<groupId>javax.faces</groupId>
+			<artifactId>jsf-api</artifactId>
+			<version>1.2_09</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.faces</groupId>
+			<artifactId>jsf-impl</artifactId>
+			<version>1.2_09</version>
+		</dependency>
+
+		<!-- Acegi JSF -->
+
+		<dependency>
+			<groupId>net.sf.jsfcomp</groupId>
+			<artifactId>acegijsf</artifactId>
+			<version>1.1.2</version>
+		</dependency>
+
+		<!-- Facelets -->
+
+		<dependency>
+			<groupId>com.sun.facelets</groupId>
+			<artifactId>jsf-facelets</artifactId>
+			<version>1.1.11</version>
+		</dependency>
+
+		<!-- JSTL -->
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.1.2</version>
+		</dependency>
+
+		<!-- El Language -->
+
+		<dependency>
+			<groupId>javax.el</groupId>
+			<artifactId>el-api</artifactId>
+			<version>1.0</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.sun.el</groupId>
+			<artifactId>el-ri</artifactId>
+			<version>1.0</version>
+		</dependency>
+
+		<!-- Hsqldb -->
+
+		<dependency>
+			<groupId>hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+			<version>1.8.0.7</version>
+		</dependency>
+
+		<!-- JTA Transaction API -->
+
+		<dependency>
+			<groupId>javax.transaction</groupId>
+			<artifactId>jta</artifactId>
+			<version>1.0.1B</version>
+		</dependency>
+
+		<!-- Slf4j (Needed bnety Hibernate) -->
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.5.2</version>
+		</dependency>
+
+		<!-- Hibernate -->
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>3.3.0.GA</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-annotations</artifactId>
+			<version>3.4.0.GA</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-commons-annotations</artifactId>
+			<version>3.1.0.GA</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>3.4.0.GA</version>
+		</dependency>
+
+	</dependencies>
+</project>

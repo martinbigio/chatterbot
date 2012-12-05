@@ -1,0 +1,60 @@
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+    xmlns:beans="http://www.springframework.org/schema/beans"
+    xmlns:security="http://www.springframework.org/schema/security"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+        http://www.springframework.org/schema/security
+        http://www.springframework.org/schema/security/spring-security-2.0.1.xsd">
+    
+    <!-- Auto configures http -->
+    
+    <security:http auto-config="true">
+    
+    	<!-- Secured default -->
+    	<!-- 
+		<intercept-url pattern="/images/**" access="ROLE_ANONYMOUS" />
+        <intercept-url pattern="/css/**" access="ROLE_ANONYMOUS" />
+        <intercept-url pattern="/faces/pages/login.xhtml" access="ROLE_ANONYMOUS" />
+		<intercept-url pattern="/faces/**" access="ROLE_ANONYMOUS" />
+        <intercept-url pattern="/**" access="ROLE_USER,ROLE_ADMIN" />
+         -->
+        
+    	<!-- Anonymous default -->
+        <intercept-url pattern="/faces/pages/login.xhtml" access="ROLE_ANONYMOUS" />
+		<intercept-url pattern="/faces/pages/admin/**" access="ROLE_ADMIN" />
+		<intercept-url pattern="/faces/pages/analyst/**" access="ROLE_USER,ROLE_ADMIN" />
+        <intercept-url pattern="/index.jsp" access="ROLE_USER,ROLE_ADMIN" /> 
+        <intercept-url pattern="/" access="ROLE_USER,ROLE_ADMIN" /> 
+        <intercept-url pattern="/**" access="ROLE_ANONYMOUS, ROLE_USER,ROLE_ADMIN" /> 
+		
+		<form-login default-target-url="/"
+			login-page='/faces/pages/login.xhtml' 
+			login-processing-url="/j_spring_security_check.jsp" />
+		<security:logout logout-url="/j_logout.jsp"/>
+		
+		
+    </security:http>
+
+	
+
+	<!-- Authentication manager -->	
+	
+	<security:authentication-manager alias="authenticationManager"/>
+
+	<!-- Authentication provider -->
+	
+	<!-- (ESTATICO)
+	<security:authentication-provider>
+    	<user-service>
+        	<user name="admin" password="admin" authorities="ROLE_ADMIN,ROLE_USER" />
+			<user name="user" password="user" authorities="ROLE_USER" />
+		</user-service>
+	</security:authentication-provider>  -->	
+    
+    <beans:bean id="shaPasswordEncoder" class="org.springframework.security.providers.encoding.ShaPasswordEncoder"/>
+    
+	<security:authentication-provider user-service-ref="userService">
+		<security:password-encoder ref="shaPasswordEncoder" /> 
+	</security:authentication-provider>
+</beans:beans>

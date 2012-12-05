@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:amq="http://activemq.apache.org/schema/core"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans-2.0.xsd 
+						http://activemq.apache.org/schema/core 
+						http://activemq.apache.org/schema/core/activemq-core.xsd	                    http://www.springframework.org/schema/context 
+                        http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<context:property-placeholder location="classpath:setup.properties" />
+
+
+	<!-- Instancia del ActiveMQ que va a correr en el nodo. -->
+	<amq:broker useJmx="false" persistent="false">
+		<amq:transportConnectors>
+			<amq:transportConnector
+				uri="tcp://${activemq.address}:${activemq.port}" />
+		</amq:transportConnectors>
+	</amq:broker>
+
+	<!-- ConnectionFactory del broker -->
+	<bean id="jmsNodeFactory"
+		class="org.apache.activemq.pool.PooledConnectionFactory"
+		destroy-method="stop">
+		<property name="connectionFactory">
+			<bean
+				class="org.apache.activemq.ActiveMQConnectionFactory">
+				<property name="brokerURL">
+					<value>tcp://${activemq.address}:${activemq.port}</value>
+				</property>
+			</bean>
+		</property>
+	</bean>
+
+	<!-- Template para abstraerse de todos los detalles de bajo nivel.	-->
+	<bean id="jmsNodeTemplate"
+		class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory">
+			<bean
+				class="org.springframework.jms.connection.SingleConnectionFactory">
+				<property name="targetConnectionFactory">
+					<ref local="jmsNodeFactory" />
+				</property>
+			</bean>
+		</property>
+	</bean>
+
+	<!-- Datos de este servidor. -->
+	<bean id="serverConfiguration" class="ar.edu.itba.tpf.chatterbot.server.ServerConfiguration">
+		<property name="name" value="${chatterbot.name}" />
+		<property name="hostname" value="${chatterbot.hostname}" />
+		<property name="port" value="${chatterbot.port}" />
+		<property name="maxChatterbots" value="${chatterbot.maxChatterbots}" />
+		<property name="maxLoad" value="${chatterbot.maxLoad}" />
+		<property name="serverService" ref="serverService" />
+	</bean>
+	
+	<!-- Chatterbot que se va a usar como modelo para crear todo el pool. -->
+	<bean id="chatterbot"
+		class="ar.edu.itba.tpf.chatterbot.server.Chatterbot"
+		scope="prototype">
+		<constructor-arg ref="jmsNodeTemplate" />
+		<constructor-arg ref="chatterbotService" />
+		<constructor-arg ref="loggingService" />
+		<constructor-arg ref="serverService" />
+	</bean>
+
+	<!-- Pool de chatterbots. -->
+	<bean id="dispatcher"
+		class="ar.edu.itba.tpf.chatterbot.server.ChatterbotPool"
+		init-method="init" scope="singleton">
+		<property name="serverConfiguration" ref="serverConfiguration" />
+		<property name="connectionFactory">
+			<ref bean="jmsNodeFactory" />
+		</property>
+		<property name="jmsTemplate">
+			<ref bean="jmsNodeTemplate" />
+		</property>
+	</bean>
+
+	<bean id="listenerContainer"
+		class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+		<property name="connectionFactory" ref="jmsNodeFactory" />
+		<property name="destinationName" value="inputQueue" />
+		<property name="messageListener" ref="dispatcher" />
+	</bean>
+
+
+	<bean id="disconnectListener" class="ar.edu.itba.tpf.chatterbot.server.DisconnectListener" destroy-method="destroy"> 
+		<property name="dispatcherURL" value="${chatterbot.dispatcherURL}" />
+		<property name="serverName" value="${chatterbot.name}" />
+	</bean>
+</beans>

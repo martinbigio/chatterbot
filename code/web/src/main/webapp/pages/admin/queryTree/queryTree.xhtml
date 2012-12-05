@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:acegijsf="http://sourceforge.net/projects/jsf-comp/acegijsf"
+	xmlns:c="http://sourceforge.net/projects/jsf-comp">
+
+<body>
+
+<ui:composition template="/layout/menu.xhtml">
+
+	<ui:debug hotkey="p" rendered="true" />
+
+	<ui:define name="title">Árbol de consulta</ui:define>
+
+	<ui:define name="main_content">
+		<h:outputLabel value="#{treeManagerBean.loadTree}" />
+		<rich:panel>
+			<f:facet name="header">Administración del árbol de consultas</f:facet>
+			<h:form>
+				<rich:panel styleClass="tree-container">
+					<rich:tree id="tree" switchType="client"
+						value="#{treeManagerBean.data}" var="node"
+						ajaxSubmitSelection="true" reRender="detail"
+						stateAdvisor="#{treeManagerBean}"
+						nodeSelectListener="#{treeManagerBean.processSelection}" />
+				</rich:panel>
+			</h:form>
+			<h:form>
+				<rich:panel id="detail"
+					style="float: left; margin: 0; padding: 0; width: 305; border: 0;">
+					<div>
+						<h:commandButton action="#{treeManagerBean.newNode}"
+							styleClass="command-button" value="Nuevo nodo hijo" />
+						<h:commandButton action="#{treeManagerBean.removeNode}"
+							styleClass="command-button" value="Eliminar nodo" />
+					</div>
+					<rich:panel rendered="#{!(empty treeManagerBean.selectedNodeData)}"
+						styleClass="node-fields-container">
+						<h:outputText value="Descripción" />
+						<br />
+						<h:inputTextarea id="description" cols="32" rows="3"
+							label="Descripción"
+							value="#{treeManagerBean.selectedNodeData.description}"
+							required="true">
+							<f:attribute name="fieldName" value="Descripción" />
+						</h:inputTextarea>
+						<h:outputText value="Palabras clave" />
+						<br />
+						<h:inputTextarea id="keywords" cols="32" rows="3"
+							label="Palabras clave"
+							value="#{treeManagerBean.selectedNodeData.keywords}" />
+						<h:outputText value="Respuesta" />
+						<br />
+						<h:inputTextarea id="answer" cols="32" rows="3" label="Respuesta"
+							value="#{treeManagerBean.selectedNodeData.answer}"
+							required="true">
+							<f:attribute name="fieldName" value="Respuesta" />
+						</h:inputTextarea>
+						<h:outputText value="Acción" for="action" />
+						<br />
+						<h:selectOneListbox id="action" size="1"
+							value="#{treeManagerBean.selectedNodeData.action}" title="Acción"
+							converter="#{baseActionConverter}">
+							<f:selectItems value="#{treeManagerBean.actions}" />
+						</h:selectOneListbox>
+						<br />
+						<h:outputText value="Transición de error" for="errorTransition" />
+						<br />
+						<h:selectOneListbox id="errorTransition" size="1"
+							value="#{treeManagerBean.selectedNodeData.errorTransition}"
+							title="Transición de error" converter="#{treeNodeConverter}">
+							<f:selectItems value="#{queryTreeManagerBean.errorTransitions}" />
+						</h:selectOneListbox>
+						<h:commandButton action="#{treeManagerBean.saveNode}"
+							styleClass="command-button" value="Guardar nodo"
+							style="width: auto; float: right;" />
+					</rich:panel>
+				</rich:panel>
+			</h:form>
+			<h:messages id="messages" styleClass="errors" style="clear: both;" />
+			<br style="clear: both;" />
+		</rich:panel>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>

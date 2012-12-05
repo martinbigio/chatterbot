@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:amq="http://activemq.apache.org/schema/core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core.xsd">
+	<bean id="urlMapping"
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="mappings">
+			<props>
+				<prop key="/synchronize">synchronizeController</prop>
+				<prop key="/servers">serversController</prop>
+				<prop key="/disconnect">disconnectController</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+		<property name="prefix" value="/WEB-INF/jsp/" />
+		<property name="suffix" value=".jsp" />
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+	</bean>
+	
+	<bean id="serversController"
+		class="ar.edu.itba.tpf.chatterbot.dispatcher.ServersController">
+		<property name="dispatcherManager" ref="dispatcherManager" />
+	</bean>
+	
+	<bean id="synchronizeController"
+		class="ar.edu.itba.tpf.chatterbot.dispatcher.SynchronizationController">
+		<property name="dispatcherManager" ref="dispatcherManager" />
+	</bean>
+	
+	<bean id="disconnectController"
+		class="ar.edu.itba.tpf.chatterbot.dispatcher.DisconnectController">
+		<property name="dispatcherManager" ref="dispatcherManager" />
+	</bean>
+	
+	
+</beans>

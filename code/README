@@ -1,0 +1,46 @@
+
+Chatterbot README
+=================
+
+
+1. Compilacion y deploy de la aplicacion
+----------------------------------------
+
+INSTALACION Y CONFIGURACION DEL SERVIDOR OPENFIRE
+
+- Bajarse el servidor openfire de la siguiente pagina:
+  www.igniterealtime.org/projects/openfire/
+
+- Descomprimirlo e iniciar el servidor a traves del comando:
+  ./bin/openfire start
+
+- Ingresar desde un browser a la consola de administracion:
+  http://localhost:9090
+  y realizar la configuracion inicial del servidor.
+
+
+INSTALACION Y CONFIGURACION DEL SERVIDOR APACHE TOMCAT
+
+- Bajarse el servidor Apache Tomcat 6 y descomprimirlo.
+
+- Modificar el archivo conf/server.xml para que escuche en el puerto 8081.
+
+
+DEPLOY DE LA APLICACION
+
+- Ejecutar el script ./startdb.sh para inicializar la base de datos.
+
+- Ejecutar el script ./build.sh para generar todos los .war necesarios.
+
+- Editar el archivo deploy.sh y modificarle el path de instalacion del
+  Tomcat al directorio en donde se lo haya descomprimido.
+
+- Realizar un tunel a eiffel forwardeando el puerto 1521
+  ssh -L1521:localhost:1521 user@eiffel.itba.edu.ar
+
+- Ejecutar el script ./deploy.sh
+  Esto copia los war al directorio webapps del Tomcat y lo inicia mostrando
+  la salida por consola para debug.
+
+
+

@@ -1,0 +1,165 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:acegijsf="http://sourceforge.net/projects/jsf-comp/acegijsf"
+	xmlns:c="http://sourceforge.net/projects/jsf-comp">
+
+
+<body>
+<ui:composition template="/layout/layout.xhtml">
+	<ui:define name="content">
+		<div id="menu_content">
+			<h:form id="form">
+				<acegijsf:authorize ifAllGranted="ROLE_ADMIN">
+					<rich:panelMenu mode="ajax" iconExpandedGroup="disc"
+						iconCollapsedGroup="disc" iconExpandedTopGroup="chevronUp"
+						iconGroupTopPosition="right" iconCollapsedTopGroup="chevronDown"
+						iconCollapsedTopPosition="right"
+						selectedChild="#{menuManagerBean.selectedChild}">
+
+						<rich:panelMenuGroup label="Consultas" name="semantic"
+							expanded="#{menuManagerBean.selectedChild eq 'semantic'}">
+							
+							<rich:panelMenuItem label="Árbol de consultas" 
+								actionListener="#{menuManagerBean.processAction}"
+								action="query_tree" />
+								
+							<rich:panelMenuItem label="Consultas globales" 
+								actionListener="#{menuManagerBean.processAction}"
+								action="globalNodes_admin" />	
+
+							<rich:panelMenuItem label="Acciones" 
+								actionListener="#{menuManagerBean.processAction}"
+								action="actions_admin" />	
+						</rich:panelMenuGroup>
+
+						<rich:panelMenuGroup label="Servidores" name="servers"
+							expanded="#{menuManagerBean.selectedChild eq 'servers'}">
+							<rich:panelMenuItem label="Administración" actionListener="#{menuManagerBean.processAction}"
+								action="servers_admin" />
+
+							<rich:panelMenuItem label="Monitoreo" actionListener="#{menuManagerBean.processAction}"
+								action="servers_status" />
+						</rich:panelMenuGroup>
+
+						<rich:panelMenuGroup label="Usuarios" name="users"
+							expanded="#{menuManagerBean.selectedChild eq 'users'}">
+							<rich:panelMenuItem label="Administración" actionListener="#{menuManagerBean.processAction}"
+								action="users_admin" />
+						</rich:panelMenuGroup>
+
+						<rich:panelMenuGroup label="Logs" name="logs" 
+							expanded="#{menuManagerBean.selectedChild eq 'logs'}">
+							<rich:panelMenuItem label="Conversaciones" actionListener="#{menuManagerBean.processAction}"
+								action="logs_admin" />
+							<rich:panelMenuItem label="Aplicación" actionListener="#{menuManagerBean.processAction}"
+								action="logs_app" />
+						</rich:panelMenuGroup>
+
+						<rich:panelMenuGroup label="Reportes" name="reports"
+							expanded="#{menuManagerBean.selectedChild eq 'reports'}">
+							<rich:panelMenuItem label="Cantidad de chats"
+								actionListener="#{menuManagerBean.processAction}" 
+								action="#{reportManagerBean.changeReport}">
+								<f:param name="reportType" value="chats_count" />
+							</rich:panelMenuItem>
+
+							<rich:panelMenuItem label="Caminos más recorridos"
+								actionListener="#{menuManagerBean.processAction}" 
+								action="#{reportManagerBean.changeReport}">
+								<f:param name="reportType" value="most_traversed_paths" />
+							</rich:panelMenuItem>
+
+							<rich:panelMenuItem label="Consultas exitosas"
+								actionListener="#{menuManagerBean.processAction}" 
+								action="#{reportManagerBean.changeReport}">
+								<f:param name="reportType" value="successful_queries" />
+							</rich:panelMenuItem>
+
+							<rich:panelMenuItem label="Tiempo promedio"
+								actionListener="#{menuManagerBean.processAction}" 
+								action="#{reportManagerBean.changeReport}">
+								<f:param name="reportType" value="mean_session_time" />
+							</rich:panelMenuItem>
+
+							<rich:panelMenuItem label="Carga histórica" 
+								actionListener="#{menuManagerBean.processAction}" 
+								action="#{reportManagerBean.changeReport}">
+								<f:param name="reportType" value="server_load_history" />
+							</rich:panelMenuItem>
+						</rich:panelMenuGroup>
+
+					</rich:panelMenu>
+				</acegijsf:authorize>
+
+				<acegijsf:authorize ifNotGranted="ROLE_ADMIN">
+					<rich:panelMenu mode="ajax" expandedMode="ajax"
+						iconExpandedGroup="disc" iconCollapsedGroup="disc"
+						iconExpandedTopGroup="chevronUp" iconGroupTopPosition="right"
+						iconCollapsedTopGroup="chevronDown"
+						iconCollapsedTopPosition="right">
+						<rich:panelMenuGroup label="Servidores" name="servers"
+							expanded="#{menuManagerBean.selectedChild eq 'servers'}">
+							<rich:panelMenuItem label="Monitoreo" actionListener="#{menuManagerBean.processAction}"
+								action="servers_status" />
+						</rich:panelMenuGroup>
+
+						<rich:panelMenuGroup label="Logs" name="logs"
+							expanded="#{menuManagerBean.selectedChild eq 'logs'}">
+							<rich:panelMenuItem label="Conversaciones" actionListener="#{menuManagerBean.processAction}"
+								action="logs_admin" />
+						</rich:panelMenuGroup>
+						<rich:panelMenuGroup label="Reportes" name="reports"
+							expanded="#{menuManagerBean.selectedChild eq 'reports'}">
+							<rich:panelMenuItem label="Cantidad de chats"
+								actionListener="#{menuManagerBean.processAction}" 
+								action="#{reportManagerBean.changeReport}">
+								<f:param name="reportType" value="chats_count" />
+							</rich:panelMenuItem>
+
+							<rich:panelMenuItem label="Caminos más recorridos"
+								actionListener="#{menuManagerBean.processAction}" 
+								action="#{reportManagerBean.changeReport}">
+								<f:param name="reportType" value="most_traversed_paths" />
+							</rich:panelMenuItem>
+
+							<rich:panelMenuItem label="Consultas exitosas"
+								actionListener="#{menuManagerBean.processAction}" 
+								action="#{reportManagerBean.changeReport}">
+								<f:param name="reportType" value="successful_queries" />
+							</rich:panelMenuItem>
+
+							<rich:panelMenuItem label="Tiempo promedio"
+								actionListener="#{menuManagerBean.processAction}" 
+								action="#{reportManagerBean.changeReport}">
+								<f:param name="reportType" value="mean_session_time" />
+							</rich:panelMenuItem>
+
+							<rich:panelMenuItem label="Carga histórica" 
+								actionListener="#{menuManagerBean.processAction}" 
+								action="#{reportManagerBean.changeReport}">
+								<f:param name="reportType" value="server_load_history" />
+							</rich:panelMenuItem>
+						</rich:panelMenuGroup>
+						
+					</rich:panelMenu>
+				</acegijsf:authorize>
+			</h:form>
+		
+		</div>
+		<!-- div menu_content close -->
+
+		<div id="main_content">
+			<ui:insert name="main_content" />
+		</div>
+		<!-- div main_content close -->
+	</ui:define>
+</ui:composition>
+</body>
+</html>

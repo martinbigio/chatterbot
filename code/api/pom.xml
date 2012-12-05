@@ -1,0 +1,60 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>ar.edu.itba.tpf</groupId>
+		<artifactId>chatterbot-app</artifactId>
+		<version>1.1</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<name>Chatterbot - Interfaces</name>
+	<description>Interfaces de la capa de servicios y acceso a datos</description>
+	<packaging>jar</packaging>
+	<artifactId>chatterbot-api</artifactId>
+	<version>${mainVersion}</version>
+
+	<dependencies>
+		<dependency>
+			<groupId>jfree</groupId>
+			<artifactId>jfreechart</artifactId>
+			<version>1.0.5</version>
+		</dependency>
+		<!-- Hibernate Dependecies -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>3.3.0.GA</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-annotations</artifactId>
+			<version>3.4.0.GA</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-commons-annotations</artifactId>
+			<version>3.1.0.GA</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>3.4.0.GA</version>
+		</dependency>
+		<!-- JTA Transaction -->
+		<dependency>
+			<groupId>javax.transaction</groupId>
+			<artifactId>jta</artifactId>
+			<version>1.0.1B</version>
+		</dependency>
+		
+<dependency>
+    <groupId>org.aspectj</groupId>
+    <artifactId>aspectjtools</artifactId>
+    <version>1.6.1</version>
+</dependency> 
+
+	</dependencies>
+
+
+</project>

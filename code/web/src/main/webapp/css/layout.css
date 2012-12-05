@@ -1,0 +1,148 @@
+body {
+	background: #336699 url(/chatterbot-web/images/bg.png) repeat-x;
+}
+
+input, select, textarea {
+	border: solid 1px #ccccff;
+	font-family: sans-serif;
+	font-size: 10pt;
+}
+
+.header-title {
+	font-family: sans-serif;
+	letter-spacing: 12px;
+	font-variant: small-caps;
+	width: 100%;
+	color: white;
+	text-align: center;
+}
+
+.footer-credits {
+	clear: left;
+	text-align: center;
+	font-family: sans-serif;
+	font-size: 8pt;
+	padding: 8px 0;
+}
+
+#menu_content {
+	width: 150px;
+	padding: 0px;
+	float: left;
+	background: white;
+	min-height: 300px;
+	margin-right: 12px;
+}
+
+#menu_content .rich-pmenu-item-label {
+	font-size: 9pt;
+}
+
+#main_content {
+	width: 100%;
+	background: white;
+	min-height: 300px;
+}
+
+#login-form {
+	float: left;
+	width: 220px;
+}
+
+#login-form input {
+	float: left;
+	width: 100px;
+	padding: 2px;
+	margin: 4px;
+}
+
+#login-form label {
+	float: left;
+	width: 90px;
+	display: block;
+	margin: 4px;
+	padding: 2px;
+	text-align: right;
+}
+
+#login-form .login-button,
+.command-button {
+	padding: 4px 8px;
+	margin: 4px;
+	border: outset 2px #CCDDFF;
+	background-color: #CCDDFF;
+}
+
+#login-form .login-button {
+	clear: left;
+	width: 70px;
+	float: right;
+}
+
+.label {
+	font-weight: bold;
+}
+
+.timestamp {
+	font-size: 8pt;
+	color: grey;
+	padding-right: 4px;
+}
+
+.chat-entries {
+	list-style-type: none;
+	width: 75%;
+	display: block;
+	float: left;
+	padding: 0;
+	margin: 0;
+}
+
+.node-fields-container {
+	float: left;
+	width: 300px;
+	overflow: auto;
+}
+
+.node-fields-container input,
+.node-fields-container textarea,
+.node-fields-container select {
+	width: 100%;
+	margin-bottom: 8px;
+}
+
+.tree-container {
+	float: left;
+	width: 450px;
+	min-height: 400px;
+	overflow: auto;
+}
+
+.actions-container {
+	clear: left;
+	text-align: right;
+	border: 0;
+}
+
+.filter-container {
+	float: left;
+	width: 580px;
+	margin-bottom: 24px;
+}
+
+.errors li, .errors dt {
+	font-family: sans-serif;
+	font-size: 10pt;
+	font-weight: bold;
+	color: red;
+	list-style: none;
+}
+.errors img {
+	width: 12px;
+	height: 12px;
+	margin: 4px;
+}
+
+.clear {
+	clear: both;
+}

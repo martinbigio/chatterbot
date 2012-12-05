@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:acegijsf="http://sourceforge.net/projects/jsf-comp/acegijsf"
+	xmlns:c="http://sourceforge.net/projects/jsf-comp">
+
+<body>
+
+<ui:composition template="/layout/menu.xhtml">
+
+	<ui:define name="title">Panel de Administración</ui:define>
+
+	<ui:define name="main_content">
+
+	<rich:panel>
+	<f:facet name="header">Panel de Administración</f:facet>
+
+	<h3>Bienvenido al Panel de Administración de chatterbots</h3>
+	<p>Elija una de las opciones del menú de navegación.</p>
+	<br style="clear: both;" />
+	</rich:panel>
+<!-- 
+		<rich:panel>
+			<f:facet name="header">Ejemplo de panel</f:facet>
+			<h1>Este es el texto de prueba. <h:outputText
+				value="#{msg.title}" /></h1>
+
+			<h:form>
+				<rich:panel header="Simple Echo">
+					<h:inputText size="50" value="#{bean.text}">
+						<a4j:support event="onkeyup" reRender="rep" />
+					</h:inputText>
+
+					<h:outputText value="#{bean.text}" id="rep" />
+				</rich:panel>
+			</h:form>
+		</rich:panel>
+-->
+
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>

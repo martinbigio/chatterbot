@@ -1,0 +1,228 @@
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+        http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd"
+	version="1.2">
+
+	<!-- Application configuration -->
+
+	<application>
+		<!-- Activates facelets view handler -->
+		<view-handler>com.sun.facelets.FaceletViewHandler</view-handler>
+
+		<!-- Spring managed beans -->
+		<variable-resolver>org.springframework.web.jsf.DelegatingVariableResolver</variable-resolver>
+		<message-bundle>ar.edu.itba.tpf.chatterbot.ErrorMessages</message-bundle>
+	</application>
+
+	<!-- Register the phase listener for processing fieldName attribute -->
+
+	<lifecycle>
+		<phase-listener>ar.edu.itba.tpf.chatterbot.listener.MessageListener</phase-listener>
+	</lifecycle>
+
+	<!-- Global navigation rules -->
+
+	<!--
+		<converter>
+		<converter-for-class>ar.edu.itba.tpf.chatterbot.model.InternalNode</converter-for-class>
+		<converter-class>
+		ar.edu.itba.tpf.chatterbot.converter.InternalNodeConverter</converter-class>
+		</converter>
+	-->
+	<converter>
+		<converter-id>internalNodeConverter</converter-id>
+		<converter-class>
+			ar.edu.itba.tpf.chatterbot.converter.InternalNodeConverter</converter-class>
+	</converter>
+
+	<!-- Main menu rules -->
+
+	<!-- Reports -->
+	<navigation-rule>
+		<navigation-case>
+			<from-action>#{reportManagerBean.changeReport}</from-action>
+			<from-outcome>show_report</from-outcome>
+			<to-view-id>/pages/analyst/reports/report.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- Query tree -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>query_tree</from-outcome>
+			<to-view-id>/pages/admin/queryTree/queryTree.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>globalNodes_admin</from-outcome>
+			<to-view-id>/pages/admin/queryTree/listGlobalNodes.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>actions_admin</from-outcome>
+			<to-view-id>/pages/admin/queryTree/listActions.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- Users -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>users_admin</from-outcome>
+			<to-view-id>/pages/admin/users/listUsers.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- Enter login rule -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>enter_login</from-outcome>
+			<to-view-id>/pages/login.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-action>logout</from-action>
+			<to-view-id>/j_logout.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-action>goToHome</from-action>
+			<to-view-id>/pages/home.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+
+	<!-- Servers -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>servers_admin</from-outcome>
+			<to-view-id>/pages/admin/servers/listServers.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>servers_status</from-outcome>
+			<to-view-id>/pages/analyst/servers/statusServers.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- Logs -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>logs_admin</from-outcome>
+			<to-view-id>/pages/analyst/logs/listLogs.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>logs_app</from-outcome>
+			<to-view-id>/pages/admin/logs/appLogs.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<!-- End main menu rules -->
+	
+	<!--navigation-rule>
+		<from-view-id>/pages/admin/logs/appLogs.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{logManagerBean.deleteAppLogs}</from-action>
+			<from-outcome>successful</from-outcome>
+			<to-view-id>/pages/admin/logs/appLogs.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule-->
+
+	<!-- Page navigation rules -->
+
+	<!-- Login -->
+
+	<!-- /pages/login.xhtml -->
+	<navigation-rule>
+		<from-view-id>/pages/login.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>login</from-action>
+			<to-view-id>/j_spring_security_check.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- Chat logs -->
+	
+	<!-- /pages/analyst/users/listLogs.xhtml -->
+	<navigation-rule>
+		<from-view-id>/pages/analyst/logs/listLogs.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{chatLogManagerBean.viewChat}</from-action>
+			<from-outcome>successful</from-outcome>
+			<to-view-id>/pages/analyst/logs/viewChatLogs.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- /pages/analyst/users/viewChat.xhtml -->
+	<navigation-rule>
+		<from-view-id>/pages/analyst/logs/viewChatLogs.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>successful</from-outcome>
+			<to-view-id>/pages/analyst/logs/listLogs.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- Users -->
+
+	<!-- /pages/admin/users/listUsers.xhtml -->
+	<navigation-rule>
+		<from-view-id>/pages/admin/users/listUsers.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>edit</from-outcome>
+			<to-view-id>/pages/admin/users/editUser.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<!-- /pages/admin/users/editUser.xhtml -->
+	<navigation-rule>
+		<from-view-id>/pages/admin/users/editUser.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/pages/admin/users/listUsers.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- Global nodes -->
+
+	<!-- /pages/admin/queryTree/listGlobalNodes.xhtml -->
+	<navigation-rule>
+		<from-view-id>/pages/admin/queryTree/listGlobalNodes.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>edit</from-outcome>
+			<to-view-id>/pages/admin/queryTree/editGlobalNode.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<!-- /pages/admin/queryTree/editGlobalNode.xhtml -->
+	<navigation-rule>
+		<from-view-id>/pages/admin/queryTree/editGlobalNode.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/pages/admin/queryTree/listGlobalNodes.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<!-- Actions -->
+	
+	<!-- /pages/admin/queryTree/listActions.xhtml -->
+	<navigation-rule>
+		<from-view-id>/pages/admin/queryTree/listActions.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>edit</from-outcome>
+			<to-view-id>/pages/admin/queryTree/editAction.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- /pages/admin/queryTree/editAction.xhtml -->
+	<navigation-rule>
+		<from-view-id>/pages/admin/queryTree/editAction.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/pages/admin/queryTree/listActions.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+</faces-config>

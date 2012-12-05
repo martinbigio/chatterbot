@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context 
+                           http://www.springframework.org/schema/context/spring-context.xsd
+                           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+                           http://www.springframework.org/schema/tx
+						   http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+	<aop:aspectj-autoproxy />
+
+	<!-- Chart beans -->
+	<bean id="chatsCountChart" class="ar.edu.itba.tpf.chatterbot.web.charts.ChatsCountChart" >
+		<property name="loggingService" ref="loggingService" />
+	</bean>
+	<bean id="mostTraversedPathsChart"
+		class="ar.edu.itba.tpf.chatterbot.web.charts.MostTraversedPathsChart">
+		<property name="loggingService" ref="loggingService"/>		
+	</bean>
+	<bean id="meanSessionTimeChart"
+		class="ar.edu.itba.tpf.chatterbot.web.charts.MeanSessionTimeChart">
+		<property name="loggingService" ref="loggingService"/>
+	</bean>
+	<bean id="serverLoadHistoryChart"
+		class="ar.edu.itba.tpf.chatterbot.web.charts.ServerLoadHistoryChart">
+		<property name="serverService" ref="serverService"/>		
+	</bean>
+	<bean id="successfulQueriesChart"
+		class="ar.edu.itba.tpf.chatterbot.web.charts.SuccessfulQueriesChart" >
+		<property name="loggingService" ref="loggingService" />
+	</bean>
+
+	<!-- JSF beans -->
+	<bean id="logManagerBean" class="ar.edu.itba.tpf.chatterbot.web.LogManagerBean"
+		scope="session">
+		<property name="loggingService" ref="loggingService" />
+	</bean>
+	<bean id="queryTreeManagerBean" class="ar.edu.itba.tpf.chatterbot.web.QueryTreeManagerBean">
+		<constructor-arg ref="chatterbotService" />
+	</bean>
+	
+	<bean id="globalNodeManagerBean" class="ar.edu.itba.tpf.chatterbot.web.GlobalNodeManagerBean"
+		scope="session">
+		<property name="chatterbotService" ref="chatterbotService" />
+	</bean>
+	<bean id="actionManagerBean" class="ar.edu.itba.tpf.chatterbot.web.ActionManagerBean"
+		scope="session">
+		<property name="chatterbotService" ref="chatterbotService" />
+		<property name="treeManagerBean" ref="treeManagerBean" />
+	</bean>
+
+	<bean id="chatLogManagerBean" class="ar.edu.itba.tpf.chatterbot.web.ChatLogManagerBean"
+		scope="request">
+		<property name="loggingService" ref="loggingService" />
+	</bean>
+
+	<bean id="treeManagerBean" class="ar.edu.itba.tpf.chatterbot.web.TreeManagerBean"
+		scope="session">
+		<property name="chatterbotService" ref="chatterbotService" />
+	</bean>
+
+	<bean id="reportManagerBean" class="ar.edu.itba.tpf.chatterbot.web.ReportManagerBean"
+		scope="session">
+		<property name="reports">
+			<list>
+				<ref bean="chatsCountChart" />
+				<ref bean="mostTraversedPathsChart" />
+				<ref bean="meanSessionTimeChart" />
+				<ref bean="serverLoadHistoryChart" />
+				<ref bean="successfulQueriesChart" />
+			</list>
+		</property>
+	</bean>
+	<bean id="userManagerBean" class="ar.edu.itba.tpf.chatterbot.web.UserManagerBean"
+		scope="session">
+		<property name="userService" ref="userService" />
+		<property name="shaPasswordEncoder" ref="shaPasswordEncoder" />
+	</bean>
+	<bean id="statusServerManagerBean" class="ar.edu.itba.tpf.chatterbot.web.StatusServerManagerBean"
+		scope="request">
+		<property name="serverService" ref="serverService" />
+	</bean>
+	<bean id="serverManagerBean" class="ar.edu.itba.tpf.chatterbot.web.ServerManagerBean"
+		scope="session">
+		<property name="serverService" ref="serverService" />
+		<property name="loggingService" ref="loggingService" />
+	</bean>
+	<bean id="menuManagerBean" class="ar.edu.itba.tpf.chatterbot.web.MenuManagerBean"
+		scope="session" />
+		
+	<bean id="loggingManagerBean" class="ar.edu.itba.tpf.chatterbot.web.LoginManagerBean"
+		scope="request" />
+		
+
+	<!-- End JSF beans -->
+
+	<!-- Converter beans -->
+	<bean id="roleConverter" class="ar.edu.itba.tpf.chatterbot.converter.RoleConverter">
+		<property name="userService" ref="userService" />
+	</bean>
+	<bean id="treeNodeConverter"
+		class="ar.edu.itba.tpf.chatterbot.converter.TreeNodeConverter">
+		<property name="chatterbotService" ref="chatterbotService" />
+	</bean>
+	<bean id="baseActionConverter"
+		class="ar.edu.itba.tpf.chatterbot.converter.BaseActionConverter">
+		<property name="chatterbotService" ref="chatterbotService" />
+	</bean>
+	<!-- End Converter beans -->
+
+	<!-- Validator beans -->
+	<bean id="urlValidator" class="ar.edu.itba.tpf.chatterbot.validator.URLValidator" />
+	<bean id="emailValidator" class="ar.edu.itba.tpf.chatterbot.validator.EmailValidator" />
+	<bean id="userValidator" class="ar.edu.itba.tpf.chatterbot.validator.UserValidator">
+		<property name="userService" ref="userService" />
+	</bean>
+	<!-- End Validator beans -->
+</beans>
